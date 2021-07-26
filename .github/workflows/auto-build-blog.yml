@@ -1,0 +1,28 @@
+name: auto-build-blog
+on:
+  push:
+    paths:
+      - 'blog/**'
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        cache: 'npm'
+    - name: Build
+      run: npm run build
+    - name: Deploy
+      run: |
+        cp -rf ./blog/.vuepress/dist/* ./docs/
+        git config  user.email qpreper@hotmail.com
+        git config  user.name preper
+        git add .
+        git commit -m "feat: auto-build-blog" -a
+    - name: Push
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -8,4 +8,4 @@
 npm run build
 
 # 进入生成的文件夹
-cp blog/.vuepress/dist/* ./docs/
+cp -rf blog/.vuepress/dist/* ./docs/
