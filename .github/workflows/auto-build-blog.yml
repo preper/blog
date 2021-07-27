@@ -17,10 +17,11 @@ jobs:
       run: |
         npm i
         npm run build
+        rm -rf ./docs/*
         cp -rf ./blog/.vuepress/dist/* ./docs/
         git config  user.email qpreper@hotmail.com
         git config  user.name preper
-        git add .
+        git add ./docs/.
         git commit -m "feat: auto-build-blog" -a
     - name: Push
       uses: ad-m/github-push-action@master
