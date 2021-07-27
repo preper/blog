@@ -13,10 +13,10 @@ jobs:
       uses: actions/setup-node@v2
       with:
         cache: 'npm'
-    - name: Build
-      run: npm run build
-    - name: Deploy
+    - name: Build and Deploy
       run: |
+        npm i
+        npm run build
         cp -rf ./blog/.vuepress/dist/* ./docs/
         git config  user.email qpreper@hotmail.com
         git config  user.name preper
