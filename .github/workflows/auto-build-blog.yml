@@ -14,13 +14,15 @@ jobs:
       with:
         cache: 'npm'
     - name: Build and Deploy
+      env:
+        CLIENT_SECRET: ${{secrets.CLIENT_SECRET}}
       run: |
         npm i
-        npm run build
+        npm run build cross-env CLIENT_SECRET=CLIENT_SECRET
         rm -rf ./docs/*
         cp -rf ./blog/.vuepress/dist/* ./docs/
-        git config  user.email qpreper@hotmail.com
-        git config  user.name preper
+        git config user.email qpreper@hotmail.com
+        git config user.name preper
         git add ./docs/.
         git commit -m "feat: auto-build-blog" -a
     - name: Push

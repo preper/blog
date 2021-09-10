@@ -28,5 +28,14 @@ module.exports = {
         }
       ]
     }
+  },
+  plugins: {
+    '@vssue/vuepress-plugin-vssue': {
+      platform: 'github',
+      owner: 'preper',
+      repo: 'blog',
+      clientId: 'f8d910cf9f5bf81ec024',
+      clientSecret: process.env.CLIENT_SECRET
+    }
   }
 }

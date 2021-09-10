@@ -450,3 +450,5 @@ function log1<T extends Length>(value: T): T {
 }
 log1({length: 1, a: 'b'})
 ```
+
+<Vssue :title="$title" />
