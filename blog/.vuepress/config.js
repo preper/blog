@@ -27,11 +27,9 @@ module.exports = {
           link: 'https://github.com/preper'
         }
       ]
-    }
-  },
-  plugins: {
-    '@vssue/vuepress-plugin-vssue': {
-      platform: 'github',
+    },
+    comment: {
+      service: 'vssue',
       owner: 'preper',
       repo: 'blog',
       clientId: 'f8d910cf9f5bf81ec024',

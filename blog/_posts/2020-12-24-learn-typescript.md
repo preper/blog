@@ -7,10 +7,18 @@ author: preper
 summary: 粗略的讲解了TypeScript的基础语法
 ---
 
-众所周知，JavaScript是一门动态弱类型的语言。动态弱类型的好处就是上手容易，对初学者友好，缺点就是维护成本高。比如现在你需要调用一个别人写的函数，没有文档和注释，那么你就需要硬着头皮去看函数内部的逻辑。TypeScript就是为了解决这类问题而出现的。
-作为JavaScript的超集，TypeScript提供了完善的类型检查机制。IDE也能基于类型系统对代码进行类型检查和代码提示，可以避免很多不必要的bug。TypeScript的接口定义也可以代替文档，可以大大降低后期使用和维护的成本。
+众所周知，JavaScript 是一门动态弱类型的语言。
+动态弱类型的好处就是上手容易，对初学者友好，缺点就是维护成本高。
+比如现在你需要调用一个别人写的函数，没有文档和注释，那么你就需要硬着头皮去看函数内部的逻辑。
+TypeScript 就是为了解决这类问题而出现的。
+作为 JavaScript 的超集，TypeScript 提供了完善的类型检查机制。
+IDE 也能基于类型系统对代码进行类型检查和代码提示，可以避免很多不必要的 bug。
+TypeScript 的接口定义也可以代替文档，可以大大降低后期使用和维护的成本。
+
 ## 基础类型
-ts里支持与js几乎相同的数据类型，比如
+
+ts 里支持与 js 几乎相同的数据类型，比如
+
 ```typescript
 // undefined
 let un: undefined = void 0
@@ -35,34 +43,54 @@ let add = (x: number, y: string): number => Number(x + y)
 let compute: () => void
 compute = () => {}
 ```
-这种(变量/函数):type的语法叫做类型注解。在具体的使用过程中，上面的类型并不能完全满足我们的需求。比如，我们有时可能会有将null和undefined赋值给某种基础类型，又或者，我们需要创建一个包含数字和字符串两种数据类型的数组。这时我们就需要用到联合类型：
+
+这种`(变量/函数):type`的语法叫做类型注解。
+在具体的使用过程中，上面的类型并不能完全满足我们的需求。
+比如，我们有时可能会有将 null 和 undefined 赋值给某种基础类型；
+又或者，我们需要创建一个包含数字和字符串两种数据类型的数组。
+这时我们就需要用到联合类型：
+
 ```typescript
 // 也可以配置tsconfig.json中的strictNullChecks
 let catNum: number | null = null
 
 let arr3: Array<number | string> = [1, 2, '3']
 ```
-ts中还有一种特殊的数组类型，叫做元组。元组限定了数组元素的类型和个数。
+
+ts 中还有一种特殊的数组类型，叫做元组。
+元组限定了数组元素的类型和个数。
+
 ```typescript
 // 元组
 let tuple: [number, string | number] = [1, '2']
 ```
-值得注意的是，对元组使用push、pop等方法虽然不会报错，但由于元组不支持越界访问，而且某些数组的操作方法可能导致元组元素的数据类型与定义有差别，继而导致出现bug，所以强烈不建议这样操作。
+
+值得注意的是，对元组使用 push、pop 等方法虽然不会报错，但由于元组不支持越界访问，而且某些数组的操作方法可能导致元组元素的数据类型与定义有差别，继而导致出现 bug，所以强烈不建议这样操作。
+
 根据各种基本类型注解的规律，其实很容易联想到对象的声明方式：
+
 ```typescript
 // 不推荐
 let obj: object = {x: 1, y: '2'}
 ```
-在使用中就会发现，object类型的变量只是允许你给它赋任意值，但是却不能够在它上面调用属性和方法，即便它们真的存在。所以对象的类型注解会像元组一样，详细的描述对象内包含的属性及属性的类型：
+
+在使用中就会发现，object 类型的变量只是允许你给它赋任意值，但是却不能够在它上面调用属性和方法，即便它们真的存在。
+所以对象的类型注解会像元组一样，详细的描述对象内包含的属性及属性的类型：
+
 ```typescript
 let obj1: {x: number, y: string} = {x: 1, y: '2'}
 ```
-在生产环境中，有些变量来可能自动态的内容，无法确定其类型，这时候我们可以用any来标记这些变量。使用any标记的变量就比较像js中的变量，可以跨类型赋值
+
+在生产环境中，有些变量来可能自动态的内容，无法确定其类型，这时候我们可以用 any 来标记这些变量。
+使用 any 标记的变量就比较像 js 中的变量，可以跨类型赋值
+
 ```typescript
 let anything: any = {x: 1, y: '2'}
 anything = false
 ```
-ts中还有一种特殊的类型never，表示总是会抛出异常或不会有返回值函数的返回值类型
+
+ts 中还有一种特殊的类型 never，表示总是会抛出异常或不会有返回值函数的返回值类型：
+
 ```typescript
 let error = (): never => {
     throw new Error('error')
@@ -71,13 +99,19 @@ let endless = (): never => {
     while(true) {}
 }
 ```
-ts中有完善的类型推论，所以在声明变量时不使用类型注解也能得到ts类型检查的帮助
+
+ts 中有完善的类型推论，所以在声明变量时不使用类型注解也能得到 ts 类型检查的帮助
+
 ```typescript
 let x = 1
 x = '3' // error，不能将“string”分配给“number”
 ```
+
 ## 枚举类型
-枚举类型enum是对JavaScript标准数据类型的一个补充，可以理解为一组常量的集合。 使用枚举类型可以为一组数值赋予友好的名字：
+
+枚举类型 enum 是对 JavaScript 标准数据类型的一个补充，可以理解为一组常量的集合。
+使用枚举类型可以为一组数值赋予友好的名字：
+
 ```typescript
 // 数字枚举
 // 默认情况下，从0开始为元素编号，也可以手动指定成员的数值
@@ -117,7 +151,9 @@ const enum Month {
 }
 let month = [Month.Jan]
 ```
-上面的代码经过tsc编译后会变成下面的js：
+
+上面的代码经过 tsc 编译后会变成下面的 js：
+
 ```javascript
 // 数字枚举
 var Role;
@@ -152,7 +188,9 @@ var Char;
 // 常量枚举编译阶段会被移除
 var month = [0 /* Jan */];
 ```
-ts中还可以将枚举作为变量的类型注解
+
+ts 中还可以将枚举作为变量的类型注解：
+
 ```typescript
 // 枚举类型
 enum E { a, b }
@@ -176,9 +214,13 @@ let g2: G.a = G.a
 let g3: G = 'apple' // error，虽然G内包含'apple'，但字符串常量'apple'并不严格属于类型G
 let g4: G.a = G.b // error，无法跨子类型赋值
 ```
+
 ## 接口
+
 接口可以分为对象类型的接口和函数类型的接口。
+
 对象接口：
+
 ```typescript
 interface Item {
     readonly id: number
@@ -235,7 +277,9 @@ let temp = {
     a: 'testa'
 }
 ```
+
 函数接口：
+
 ```typescript
 // 上面介绍函数时用到了这种定义方法。需要注意的是，这里addFunction不是接口，而是一个未被赋值的函数
 let addFunction: (x: number, y: number) => number
@@ -248,8 +292,11 @@ type Add2 = (x: number, y: number) => number
 
 let addFn: Add = (a, b) => a + b
 ```
+
 ## 函数
-在ts中定义函数，有很多小技巧
+
+在 ts 中定义函数，有很多小技巧
+
 ```typescript
 // 函数可以依靠ts的类型推断得到返回值
 function addnum1(x: number, y: number) {
@@ -281,8 +328,12 @@ function addnum5(...rest: any[]): any { // 这里不算做函数重载的一部�
 console.log(addnum5('1', '2', '3')) // 1-2-3
 console.log(addnum5('1', 2, '3')) // error，混合类型的参数不在重载列表中
 ```
+
 ## 类
-es6可以通过class关键字定义类。而ts在es6的基础上，为class提供了丰富的修饰符。
+
+es6 可以通过 class 关键字定义类。
+而 ts 在 es6 的基础上，为 class 提供了丰富的修饰符。
+
 ```typescript
 // 抽象类，一般用来声明基类，可以继承但不能创建实例
 abstract class Animal {
@@ -357,7 +408,9 @@ class MyWorkFlow extends WorkFlow {
 }
 new MyWorkFlow().next().step1().next().step2() // 也可以通过继承的方法实现链式调用
 ```
-类也可以通过接口来约束
+
+类也可以通过接口来约束：
+
 ```typescript
 // 类的接口只能约束公有成员，在创建类时可以实现更多的方法
 interface Human {
@@ -408,8 +461,13 @@ class C implements AutoInterface { // error，pstate是私有属性，只能通�
 class Bus extends Auto implements AutoInterface {}
 
 ```
+
 ## 泛型
-前面在定义数组的时候也用到了泛型。泛型可以使一个函数支持多种类型的数据。 这样在开发时就可以以不同的数据类型来使用函数。
+
+前面在定义数组的时候也用到了泛型。
+泛型可以使一个函数支持多种类型的数据。 
+这样在开发时就可以以不同的数据类型来使用函数。
+
 ```typescript
 function log<T>(value: T): T { // log函数可以以不同类型的参数调用
     console.log(value)
@@ -450,5 +508,3 @@ function log1<T extends Length>(value: T): T {
 }
 log1({length: 1, a: 'b'})
 ```
-
-<Vssue :title="$title" />
