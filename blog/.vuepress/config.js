@@ -32,6 +32,7 @@ module.exports = {
       service: 'vssue',
       owner: 'preper',
       repo: 'blog',
+      proxy: url => `https://cors-anywhere.herokuapp.com/${url}`,
       clientId: 'f8d910cf9f5bf81ec024',
       clientSecret: process.env.CLIENT_SECRET
     }
