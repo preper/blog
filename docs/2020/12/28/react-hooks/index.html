@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>React Hooks上手指南 | preper&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="简单的介绍一下React Hooks">
+    <meta name="referrer" content="no-referrer">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.2b79a672.css" as="style"><link rel="preload" href="/blog/assets/js/app.8066f0e3.js" as="script"><link rel="preload" href="/blog/assets/js/6.c1ed8185.js" as="script"><link rel="preload" href="/blog/assets/js/3.52525339.js" as="script"><link rel="preload" href="/blog/assets/js/14.bfcd3b26.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.bc811f19.js"><link rel="prefetch" href="/blog/assets/js/11.143bf8f7.js"><link rel="prefetch" href="/blog/assets/js/12.6d55bc49.js"><link rel="prefetch" href="/blog/assets/js/13.d620a257.js"><link rel="prefetch" href="/blog/assets/js/15.ff251a07.js"><link rel="prefetch" href="/blog/assets/js/16.8f82895d.js"><link rel="prefetch" href="/blog/assets/js/17.9a1d87d3.js"><link rel="prefetch" href="/blog/assets/js/18.063c4ae7.js"><link rel="prefetch" href="/blog/assets/js/19.aaa804c4.js"><link rel="prefetch" href="/blog/assets/js/20.50532574.js"><link rel="prefetch" href="/blog/assets/js/4.f8f12bc4.js"><link rel="prefetch" href="/blog/assets/js/5.eccc0ddb.js"><link rel="prefetch" href="/blog/assets/js/7.c4cbf6cc.js"><link rel="prefetch" href="/blog/assets/js/8.3bec708c.js"><link rel="prefetch" href="/blog/assets/js/9.190ee79e.js"><link rel="prefetch" href="/blog/assets/js/vuejs-paginate.e2d52177.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.2b79a672.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><a href="/blog/" class="nav-link home-link">preper's Blog </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/blog/" class="nav-link">Blog</a></li><li class="nav-item"><a href="/blog/tag/" class="nav-link">Tags</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/blog/" class="nav-link mobile-home-link">preper's Blog </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/blog/" class="nav-link">Blog</a></li><li class="mobile-nav-item"><a href="/blog/tag/" class="nav-link">Tags</a></li> <li class="mobile-nav-item"><!----></li></ul></div></div></div> <div class="content-wrapper"><div id="vuepress-theme-blog__post-layout"><article itemscope="itemscope" itemtype="https://schema.org/BlogPosting" class="vuepress-blog-theme-content"><header><h1 itemprop="name headline" class="post-title">
+        React Hooks上手指南
+      </h1> <div class="post-meta"><div itemprop="publisher author" itemtype="http://schema.org/Person" itemscope="itemscope" class="post-meta-author"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-navigation"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> <span itemprop="name">preper</span> <!----></div> <div class="post-meta-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <time pubdate itemprop="datePublished" datetime="2020-12-28T00:00:00.000Z">
+      Mon Dec 28 2020
+    </time></div> <ul itemprop="keywords" class="post-meta-tags"><li class="post-tag" data-v-42ccfcd5><a href="/blog/tag/React" data-v-42ccfcd5><span data-v-42ccfcd5>React</span></a></li></ul></div></header> <div itemprop="articleBody" class="content__default"><p>React 组件大致可以分为两类：函数组件和 class 组件。
+由于函数组件必需是纯函数，所以无法包括生命周期与内部状态，使用场景受限。
+Hook 赋予了函数式组件更多的能力。
+Hook 是 React 16.8 的新增特性。
+它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性。</p> <h2 id="为什么要使用hooks"><a href="#为什么要使用hooks" class="header-anchor">#</a> 为什么要使用Hooks</h2> <p>要回答这个问题，首先看一个例子。
+用类组件和函数组件实现一个计数器：</p> <div class="language-javascript line-numbers-mode"><pre class="language-javascript"><code><span class="token comment">// class</span>
+<span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">{</span> Component <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Example</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token literal-property property">count</span><span class="token operator">:</span><span class="token number">0</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">addCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token literal-property property">count</span><span class="token operator">:</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>
+            <span class="token operator">&lt;</span>div<span class="token operator">&gt;</span>
+                <span class="token operator">&lt;</span>p<span class="token operator">&gt;</span>You clicked <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>count<span class="token punctuation">}</span> times<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">&gt;</span>
+                <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">addCount</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&gt;</span>Chlick me<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+            <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">&gt;</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> Example<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><div class="language-javascript line-numbers-mode"><pre class="language-javascript"><code><span class="token comment">// hooks</span>
+<span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">{</span> useState <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+<span class="token keyword">function</span> <span class="token function">Example</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token punctuation">[</span> count <span class="token punctuation">,</span> setCount <span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+        <span class="token operator">&lt;</span>div<span class="token operator">&gt;</span>
+            <span class="token operator">&lt;</span>p<span class="token operator">&gt;</span>You clicked <span class="token punctuation">{</span>count<span class="token punctuation">}</span> times<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">&gt;</span>
+            <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=&gt;</span><span class="token punctuation">{</span><span class="token function">setCount</span><span class="token punctuation">(</span>count<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&gt;</span>click me<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">&gt;</span>
+    <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> Example<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>比较两种编写组件的方式，最直观的结论就是函数式组件的代码比类组件少。
+但这只是表象。
+函数式组件比起代码少，更大的优势是将状态的创建、更新和调用的逻辑集中在了一处。
+以往在编写类组件时，所有的状态全部在 constructor 中创建，而更新和调用可能会放到很多不同的方法里，后期维护就需要在多个方法中梳理状态变更的逻辑，类组件的复用也会因此受到影响。
+Hook 就是为解决这些问题而出现的。下面就来简单介绍 Hook 的用法。</p> <h2 id="常用hook介绍"><a href="#常用hook介绍" class="header-anchor">#</a> 常用Hook介绍</h2> <h3 id="_1-state-hook"><a href="#_1-state-hook" class="header-anchor">#</a> 1. state hook</h3> <p>拿上面的计数器组件为例：</p> <div class="language-javascript line-numbers-mode"><pre class="language-javascript"><code><span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">{</span> useState <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+<span class="token keyword">function</span> <span class="token function">Example</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token punctuation">[</span> count <span class="token punctuation">,</span> setCount <span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+        <span class="token operator">&lt;</span>div<span class="token operator">&gt;</span>
+            <span class="token operator">&lt;</span>p<span class="token operator">&gt;</span>You clicked <span class="token punctuation">{</span>count<span class="token punctuation">}</span> times<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">&gt;</span>
+            <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=&gt;</span><span class="token punctuation">{</span><span class="token function">setCount</span><span class="token punctuation">(</span>count<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&gt;</span>click me<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">&gt;</span>
+    <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> Example<span class="token punctuation">;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>useState 就是 state hook。
+useState 的用法是向 useState 传入参数 state 的初始值（0），通过 es6 的解构赋值拿到 useState 返回的 state 和更新 state 的函数，在这个例子里是 count 和 setCount。
+只有使用 setCount 方法才能更新 dom 节点中的 count。
+state 的初始值可以是基本类型，也可以是对象或数组。
+但值得注意的是，class 组件中的 setState 在更新 this.state 对象时是进行更新操作，但 useState 返回的更新 state 的函数对 state 对象执行的操作是替换。
+所以，在用 state hook 更新对象时，需要传入 state 对象的所有属性，避免属性丢失。
+setState 也可以传入一个函数作为参数。
+函数的参数是 state 的当前值，函数的返回值是 state 变更后的值。
+这种方法使得依赖当前 state 值更新 state 变得更加方便。</p> <h3 id="_2-effect-hook"><a href="#_2-effect-hook" class="header-anchor">#</a> 2. effect hook</h3> <p>effect hook 给函数组件增加了操作副作用的能力：</p> <div class="language-javascript line-numbers-mode"><pre class="language-javascript"><code><span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">{</span> useState<span class="token punctuation">,</span> useEffect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">Example</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>count<span class="token punctuation">,</span> setCount<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// 相当于 componentDidMount 和 componentDidUpdate:</span>
+  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 使用浏览器的 API 更新页面标题</span>
+    document<span class="token punctuation">.</span>title <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">You clicked </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>count<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> times</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>div<span class="token operator">&gt;</span>
+      <span class="token operator">&lt;</span>p<span class="token operator">&gt;</span>You clicked <span class="token punctuation">{</span>count<span class="token punctuation">}</span> times<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">&gt;</span>
+      <span class="token operator">&lt;</span>button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">setCount</span><span class="token punctuation">(</span>count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&gt;</span>
+        Click me
+      <span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">&gt;</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><p>上面的例子简单介绍了 effect hook 的使用方式。
+向 useEffect 传入一个回调函数（以下简称为 effect 函数）。
+React 会在第一次渲染完成和每次更新完成后执行 effect 函数。
+在这个计数器例子中，每次更新 count 后 effect 函数都会更新页面的 title。
+在 React 执行重新渲染的过程中，每次传递给 useEffect 的函数都会有所不同。
+正是这个原因，我们可以在 effect 中获取到最新的 state 值，每次重新渲染都会生成新的 effect。</p> <p>effect 函数还可以返回一个函数来清除副作用。
+比如在 effect 里绑定了一个监听页面滚动的事件，就可以让 effect 函数返回一个解绑监听的函数。
+React 会在执行清除操作时调用 effect 返回的函数。
+这种 api 设计，使得添加和移除订阅的逻辑放到了一起，更方便后期维护。</p> <p>上面提到了，每次重新渲染时都会生成新的 effect 函数。
+所以清除副作用的函数也是在每次渲染后都会执行。
+而即使更新一个在 effect 函数内没有使用的 state，也会导致 effect 函数被执行。
+这样看来，effect 函数的开销会很大。
+effect hook 提供了一个优化的方法。
+我们可以向 useEffect 传入第二个参数，参数的格式为数组，数组的元素为 effect 函数依赖的 state 字段。
+在这种调用方式之下，只有数组内的 state 变化时才会执行对应的 effect 函数。
+而假如我们只想创建一个只运行一次的 effect，就可以将 useEffect 的第二个参数设置为一个空数组。
+上面的组件可以这样优化：</p> <div class="language-javascript line-numbers-mode"><pre class="language-javascript"><code><span class="token keyword">function</span> <span class="token function">Example</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ...</span>
+  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 使用浏览器的 API 更新页面标题</span>
+    document<span class="token punctuation">.</span>title <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">You clicked </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>count<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> times</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>count<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><p>这样修改后，只有 count 发生变化时才会执行修改页面 title 的操作，而其他的 state 变化时不会导致这个 effect 被执行。</p> <h3 id="_3-context-hook"><a href="#_3-context-hook" class="header-anchor">#</a> 3. context hook</h3> <p>useContext 接收一个 context 对象（React.createContext 的返回值），并返回该 context 的当前值。
+当前的 context 值由上层组件中距离当前组件最近的<code>&lt;MyContext.Provider&gt;</code>的 value 属性决定。</p> <div class="language-javascript line-numbers-mode"><pre class="language-javascript"><code><span class="token keyword">const</span> themes <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">light</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">foreground</span><span class="token operator">:</span> <span class="token string">&quot;#000000&quot;</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">background</span><span class="token operator">:</span> <span class="token string">&quot;#eeeeee&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">dark</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">foreground</span><span class="token operator">:</span> <span class="token string">&quot;#ffffff&quot;</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">background</span><span class="token operator">:</span> <span class="token string">&quot;#222222&quot;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> ThemeContext <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">createContext</span><span class="token punctuation">(</span>themes<span class="token punctuation">.</span>light<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">App</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>ThemeContext<span class="token punctuation">.</span>Provider value<span class="token operator">=</span><span class="token punctuation">{</span>themes<span class="token punctuation">.</span>dark<span class="token punctuation">}</span><span class="token operator">&gt;</span>
+      <span class="token operator">&lt;</span>Toolbar <span class="token operator">/</span><span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>ThemeContext<span class="token punctuation">.</span>Provider<span class="token operator">&gt;</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">Toolbar</span><span class="token punctuation">(</span><span class="token parameter">props</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>div<span class="token operator">&gt;</span>
+      <span class="token operator">&lt;</span>ThemedButton <span class="token operator">/</span><span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">&gt;</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">ThemedButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> theme <span class="token operator">=</span> <span class="token function">useContext</span><span class="token punctuation">(</span>ThemeContext<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>button style<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span> <span class="token literal-property property">background</span><span class="token operator">:</span> theme<span class="token punctuation">.</span>background<span class="token punctuation">,</span> <span class="token literal-property property">color</span><span class="token operator">:</span> theme<span class="token punctuation">.</span>foreground <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&gt;</span>
+      <span class="token constant">I</span> am styled by theme context<span class="token operator">!</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br></div></div><p>上面的代码在初始化 ThemeContext 时创建了一个 context 对象，并且设置初始值为 themes.light。
+而在 app 组件中，通过调用 ThemeContext 上的 Provider 组件，设置内部使用的 context 值为 themes.dark。
+在 ThemedButton 组件中，使用 useContext 获取当前组件的 ThemeContext，将 themes.dark 内的属性绑定到了 ThemedButton上。</p> <h3 id="_4-额外的hook"><a href="#_4-额外的hook" class="header-anchor">#</a> 4. 额外的Hook</h3> <p>React 中还有很多 Hook，有的是上面 Hook 的变体，有的仅在特殊的情况下才会用到。
+这里仅做简要介绍。</p> <ul><li>useReducer：useState的替代方案。
+它接收一个形如<code>(state, action) =&gt; newState</code>的 reducer。
+第二个参数为可选参数，可以传入初始的 state。
+useReducer 返回当前的 state 以及和它配套的 dispatch 方法。</li> <li>useCallback：接收两个参数，第一个参数是内联回调函数，第二个参数是依赖项数组。
+useCallback 返回的函数是传入的回调函数的 memoized 版本，仅在某个依赖项改变时才会更新。</li> <li>useMemo：接收两个参数，第一个参数是创建函数，第二个参数是依赖项数组。
+返回 memoized 值。仅当依赖项改变时才重新计算 memoized 值。</li> <li>useRef：接收一个初始值，返回一个可变的 ref 对象。
+useRef 创建的对象不会随着组件的更新重新创建，基于这个特性，可以用 useRef 储存常量。</li> <li>useImperativeHandle：接收两个参数，ref 和 createHandle。
+它可以让你在使用 ref 时自定义暴露给父组件的实例值。useImperativeHandle 应当与 forwardRef 一起使用。</li> <li>useLayoutEffect：函数签名与 useEffect 相同，但会在所有的 DOM 变更之后同步调用 effect。</li> <li>useDebugValue：可用于在 React 开发者工具中显示自定义 hook 的标签。</li></ul> <h2 id="hook规则"><a href="#hook规则" class="header-anchor">#</a> Hook规则</h2> <p>使用hook时有两个规则限制：</p> <ul><li>只能在函数最外层调用 Hook。</li> <li>只能在 React 的函数组件中调用 Hook，不要在普通的 JavaScript 函数中调用 Hook。</li></ul> <p>之前在介绍 Hook 的时候提到了，可以在单个组件中使用多个 State Hook 或 Effect Hook。
+而 React 是靠 Hook 的调用顺序来判断 state 对应的 useState。
+假如在判断或者循环语句中调用 Hook，就会导致再次渲染组件时 Hook 的调用顺序和初始化时不同，进而产生 bug。
+所以假如需要有条件的执行一个 Hook，可以将判断条件放进 Hook 内部。</p> <h2 id="tips"><a href="#tips" class="header-anchor">#</a> Tips</h2> <ul><li>除了上面提到的基础 Hook，我们还可以创建以 use 开头命名的自定义 Hook，封装组件中可重用的逻辑。</li> <li>class 组件中的 getSnapshotBeforeUpdate、getDerivedStateFromError、componentDidCatch 等生命周期还没有与之对应的 Hook 写法。</li> <li>可以用 React.memo 实现 shoudComponentUpdate。</li> <li>如果 effect 的依赖会频繁变化，可以尝试使用 setState 的函数式更新形式，解除 effect 对 state 的依赖。</li></ul></div> <footer><!----> <hr> <!----></footer></article> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h2 active"><a href="#为什么要使用hooks" title="为什么要使用Hooks">为什么要使用Hooks</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#常用hook介绍" title="常用Hook介绍">常用Hook介绍</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_1-state-hook" title="1. state hook">1. state hook</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_2-effect-hook" title="2. effect hook">2. effect hook</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_3-context-hook" title="3. context hook">3. context hook</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#_4-额外的hook" title="4. 额外的Hook">4. 额外的Hook</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#hook规则" title="Hook规则">Hook规则</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#tips" title="Tips">Tips</a></div></div></div></div> <footer class="footer" data-v-3d9deeb8><div class="footer-left-wrap" data-v-3d9deeb8><ul class="contact" data-v-3d9deeb8><li class="contact-item" data-v-3d9deeb8><a href="https://github.com/preper" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-3d9deeb8><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github" data-v-3d9deeb8><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-v-3d9deeb8></path></svg>
+          
+        </a></li><li class="contact-item" data-v-3d9deeb8><a href="mailto:qpreper@hotmail.com" class="nav-link external" data-v-3d9deeb8><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail" data-v-3d9deeb8><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" data-v-3d9deeb8></path><polyline points="22,6 12,13 2,6" data-v-3d9deeb8></polyline></svg>
+          
+        </a></li></ul></div> <div class="footer-right-wrap" data-v-3d9deeb8><ul class="copyright" data-v-3d9deeb8><li class="copyright-item" data-v-3d9deeb8><a href="https://github.com/preper" target="_blank" rel="noopener noreferrer" class="nav-link external" data-v-3d9deeb8>Copyright © 2020-present preper</a></li></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/blog/assets/js/app.8066f0e3.js" defer></script><script src="/blog/assets/js/6.c1ed8185.js" defer></script><script src="/blog/assets/js/3.52525339.js" defer></script><script src="/blog/assets/js/14.bfcd3b26.js" defer></script>
+  </body>
+</html>

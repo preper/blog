@@ -1,5 +1,9 @@
 /node_modules/
+/blog/
+/temp/
+/.github/
 
-/blog/.vuepress/dist/
-
+package.json
+package-lock.json
+.gitignore.deploy
 .DS_store

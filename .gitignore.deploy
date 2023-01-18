@@ -1,9 +1,0 @@
-/node_modules/
-/blog/
-/temp/
-/.github/
-
-package.json
-package-lock.json
-.gitignore.deploy
-.DS_store
